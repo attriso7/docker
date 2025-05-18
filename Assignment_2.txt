@@ -1,0 +1,45 @@
+pipeline {
+    agent {
+        label 'slave'
+        
+    }
+
+    stages {
+        stage('Q1') {
+            steps {
+                dir('Q1') {
+                    git branch: 'Q1', url: 'https://github.com/attriso7/2025.git'
+                    sh 'chmod 777 index.html'
+                    sh 'docker rm -f Q1 || true'
+                    sh 'docker run -dit -p 80:80 --name Q1 httpd'
+                    sh 'docker cp index.html Q1:/usr/local/apache2/htdocs/index.html'
+                }
+            }
+        }
+
+        stage('Q2') {
+            steps {
+                dir('Q2') {
+                    git branch: 'Q2', url: 'https://github.com/attriso7/2025.git'
+                    sh 'chmod 777 index.html'
+                    sh 'docker rm -f Q2 || true'
+                    sh 'docker run -dit -p 90:80 --name Q2 httpd'
+                    sh 'docker cp index.html Q2:/usr/local/apache2/htdocs/index.html'
+                }
+            }
+        }
+
+        stage('Q3') {
+            steps {
+                dir('Q3') {
+                    git branch: 'Q3', url: 'https://github.com/attriso7/2025.git'
+                    sh 'chmod 777 index.html'
+                    sh 'docker rm -f Q3 || true'
+                    sh 'docker run -dit -p 8081:80 --name Q3 httpd'
+                    sh 'docker cp index.html Q3:/usr/local/apache2/htdocs/index.html'
+                }
+            }
+        }
+    }
+}
+
